@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8 />
+<title>{$page_title}</title>
+
+<!-- this link will be substituted with the right path : href="THEMES/acid/style.css" -->
+<link href="style.css" type="text/css" rel="stylesheet" >
+</head>
+<body>
+	
+	<!-- content -->
+	<div id="content">
+	
+		<h2>Welcome to Erkan Yavas's site!</h2>
+		<div class="layout">
+            
+			<h3>Secure Login</h3>
+			{if condition="$loginMessage != ''"}
+    			<h4>{$loginMessage}</h4>
+			{/if}
+			<form method="post" action="{$loginAction}" enctype="multipart/form-data" >
+			
+				<tt>
+					User<br/>
+					<input type="text" name="{$loginName}" /><br/>
+					 Password<br/>
+					<input type="text" name="{$loginPassword}" />
+					<br/>
+					<input type="submit" value="{$submitButton}" />
+				</tt>
+				
+			</form>
+			 
+		</div> 
+		
+		 
+	</div>
+	 
+
+</body>
+</html>

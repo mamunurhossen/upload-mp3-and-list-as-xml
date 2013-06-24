@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8 />
+<title>{$page_title}</title>
+
+<!-- this link will be substituted with the right path : href="THEMES/acid/style.css" -->
+<link href="style.css" type="text/css" rel="stylesheet" >
+</head>
+<body>
+	
+	<!-- content -->
+	<div id="content">
+	
+		<h2>Category Management</h2>
+		<div class="layout">
+            
+			<h3>New Category Create</h3>
+			{if condition="$createMessage != ''"}
+    			<h4>{$createMessage}</h4>
+			{/if}
+			<form method="post" action="{$ctionAction}" >
+			
+				<tt>
+					Category Name<br/>
+					<input type="text" name="{$catFieldName}" /><br/>
+					 Parent Category<br/>
+					 <select name="{$catParentFieldName}">
+					 	<option value="" selected="selected">---</option>
+					 	{if condition="$parentCategory != null"}
+			    			{$parentCategory}
+						{/if}
+					 </select>
+					<br/> 
+					<br/>
+					<input type="submit" value="{$submitButton}" />
+				</tt>
+				 	<br/>
+				 	<a href="outputXML.php" >View XML Result</a>&nbsp;
+				 	<a href="upload.php" >Upload MP3</a>
+					<br/>
+			</form>
+			 
+		</div> 
+		
+		 
+	</div>
+	 
+
+</body>
+</html>

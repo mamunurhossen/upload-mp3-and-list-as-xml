@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8 />
+<title>{$page_title}</title>
+<script type="text/javascript" src="../js/jquery-1.9.1.min.js" ></script>
+<script>
+$(function() {
+	$('#parentCategory').bind('change', function() { 
+		var parentCatId = $('#parentCategory').val();
+		  
+
+		$.ajax({
+		    url: '../rain/ajax-load-category.php',
+		    cache: false,
+		    type: "POST",
+		    data: {parentCatId: parentCatId},
+		    beforeSend: function(){
+		    	$('#loadingCat').show(); 
+		    }, 
+		    success: function(response){
+		    	$("#category option").remove();
+		    	datalistObject = JSON.parse(response);
+		    	if (datalistObject.length){
+		    		
+		    		$("#category").append($("<option></option>").attr("value", '').text(''));
+		    	    for (var i=0; i < datalistObject.length; i++) {
+		    	    	$("#category").append($("<option></option>").attr("value", datalistObject[i][0]).text(datalistObject[i][1]));
+		    	    }
+		    	}
+
+		    	$('#loadingCat').hide();
+
+		    }
+		});
+
+		
+	});
+}); 
+
+
+</script>
+
+<script type="text/javascript" src="../js/ajaxupload.3.5.js" ></script>
+<script type="text/javascript" >
+	$(function(){
+		var btnUpload=$('#upload');
+		var status=$('#status');
+		new AjaxUpload(btnUpload, {
+			action: 'ajax_file_uploader.php',
+			name: 'mFile',
+			onSubmit: function(file, ext){
+				 /*if (! (ext && /^(mp3)$/.test(ext))){ 
+                    // extension is not allowed 
+					status.text('Only JPG, PNG or GIF files are allowed');
+					return false;
+				}*/
+				status.html('<img src="../images/loading.gif" />');
+				
+			},
+			onComplete: function(file, response){
+				//On completion clear the status
+				 
+				if(response == 'error'){
+					status.text('Upload failed!');
+				}else{
+					$('#mp3_file').val(response); 
+					var fileInfo = response.split('&lt;&gt;&lt;&gt;');
+					status.html(fileInfo[1]);
+				}
+				
+				
+				  
+			}
+		});
+		
+	});
+</script>
+ 
+<style>
+	#loadingCat{
+		display:none;
+	}
+</style>
+
+<!-- this link will be substituted with the right path : href="THEMES/acid/style.css" -->
+<link href="style.css" type="text/css" rel="stylesheet" >
+</head>
+<body>
+	
+	<!-- content -->
+	<div id="content">
+	
+		<h2>Upload Mp3 File</h2>
+		<h4 style="text-align:right;"><a href="logout.php" >Log out</a></h4>
+		<div class="layout">
+            
+			<h3>All fieldes are mandatory</h3>
+			{if condition="$uploadBDMessage != ''"}
+    			<h4>{$uploadBDMessage}</h4>
+			{/if}
+			<!-- <form method="post" enctype="multipart/form-data" > -->
+			
+				<tt>
+					
+					<!-- Upload Button, use any id you wish-->
+					<div id="upload" ><span>Upload File<span></div><span id="status" ></span>
+					
+					<form method="post" action="{$formAction}" enctype="multipart/form-data" > 
+						<input type="hidden" id="{$mp3Name}" name="{$mp3Name}" /> <br/>
+						Description<br/>
+						<textarea name="{$file_description_name}" rows="5" cols="35"></textarea><br/>
+						Thumbnail FIle<br/>
+						<input type="file" name="{$mp3_thumbnail}" />
+						<br/>
+						Parent Category<br/>
+						<select id="parentCategory" name="{$catParentFieldName}">
+						 	<option value="" selected="selected">---</option>
+						 	{if condition="$parentCategory != null"}
+				    			{$parentCategory}
+							{/if}
+						</select>
+						<br/>
+						Category<br/>
+						<select id="category" name="{$catFieldName}">
+						 	<option value="" selected="selected">---</option>
+						 	 
+						</select><img id="loadingCat" src="../images/loading.gif" />
+						<br/><br/>
+						<input type="submit" value="{$submit_button}" />
+					</form>
+				</tt>
+				
+			<!--  -->
+			  	<br/>
+			 	<a href="outputXML.php" >View XML Result</a>&nbsp;
+			 	<a href="category.php" >Category Management</a>
+				<br/>
+		</div> 
+		
+		 
+	</div>
+
+ 
+
+</body>
+</html>
